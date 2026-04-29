@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca — Livros</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="icon">📚</div>
+      <span>Biblioteca</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-label">Menu</div>
+      <a href="dashboard.html" class="nav-item"><span class="icon">🏠</span> Dashboard</a>
+      <a href="livros.html" class="nav-item active"><span class="icon">📖</span> Livros</a>
+      <a href="emprestimos.html" class="nav-item"><span class="icon">🔄</span> Empréstimos</a>
+      <a href="atrasos.html" class="nav-item"><span class="icon">⚠️</span> Atrasos</a>
+      <a href="alunos.html" class="nav-item"><span class="icon">👨‍🎓</span> Alunos</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-info">
+        <div class="avatar">MC</div>
+        <div>
+          <div class="name">Maria Costa</div>
+          <div class="role">Bibliotecária</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+
+
+
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title">Livros</div>
+      <div class="topbar-actions">
+        <div class="icon-btn">🔔<div class="badge-dot"></div>
+        </div>
+        <div class="topbar-avatar">MC</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <h2>Acervo de Livros</h2>
+        <button class="btn btn-primary" onclick="openModal()">＋ Novo Livro</button>
+      </div>
+
+
+
+
+
+
+
+
+
+      
+      <div class="search-wrap">
+        <span class="search-icon"></span>
+        <input class="search-input" id="bookSearch" type="text"
+          placeholder="Buscar por título, autor ou categoria..." />
+      </div>
+
+      <div class="card-box">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Autor</th>
+              <th>Categoria</th>
+              <th>Status</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="booksTable"></tbody>
+        </table>
+        <div id="noResults" class="no-results" style="display:none">Nenhum livro encontrado para "<span
+            id="searchTerm"></span>"</div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h3> Cadastrar Novo Livro</h3>
+      <div class="form-group">
+        <label>Título do Livro</label>
+        <input class="form-input" id="inpNome" placeholder="Ex: Algoritmos e Estruturas de Dados" />
+      </div>
+      <div class="form-group">
+        <label>Autor</label>
+        <input class="form-input" id="inpAutor" placeholder="Ex: Thomas H. Cormen" />
+      </div>
+      <div class="form-group">
+        <label>Categoria</label>
+        <select class="form-select" id="inpCateg">
+          <option value="">Selecionar categoria...</option>
+          <option>Tecnologia</option>
+          <option>Ciências Exatas</option>
+          <option>Literatura</option>
+          <option>História</option>
+          <option>Ciências Humanas</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveBook()">Salvar Livro</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="../js/api.js"></script>
+  <script src="../js/livros.js"></script>
+</body>
+</html>

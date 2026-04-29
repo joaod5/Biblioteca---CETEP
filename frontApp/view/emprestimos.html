@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca — Empréstimos</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../css/emprestimo.css">
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="icon"></div><span>Biblioteca</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-label">Menu</div>
+      <a href="dashboard.html" class="nav-item"><span class="icon"></span> Dashboard</a>
+      <a href="livros.html" class="nav-item"><span class="icon"></span> Livros</a>
+      <a href="emprestimos.html" class="nav-item active"><span class="icon"></span> Empréstimos</a>
+      <a href="atrasos.html" class="nav-item"><span class="icon"></span> Atrasos</a>
+      <a href="alunos.html" class="nav-item"><span class="icon"></span> Alunos</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-info">
+        <div class="avatar">MC</div>
+        <div>
+          <div class="name">Maria Costa</div>
+          <div class="role">Bibliotecária</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title">Empréstimos</div>
+      <div class="topbar-actions">
+        <div class="icon-btn">
+          <div class="badge-dot"></div>
+        </div>
+        <div class="topbar-avatar">MC</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <h2>Controle de Empréstimos</h2>
+        <button class="btn btn-primary" onclick="openModal()">＋ Novo Empréstimo</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="mini-stat"><span class="m-icon"></span>
+          <div>
+            <div class="m-val" id="cAll">0</div>
+            <div class="m-label">Total</div>
+          </div>
+        </div>
+        <div class="mini-stat"><span class="m-icon"></span>
+          <div>
+            <div class="m-val" id="cBorrowed">0</div>
+            <div class="m-label">Em aberto</div>
+          </div>
+        </div>
+        <div class="mini-stat"><span class="m-icon"></span>
+          <div>
+            <div class="m-val" id="cSoon">0</div>
+            <div class="m-label">Vencem logo</div>
+          </div>
+        </div>
+        <div class="mini-stat"><span class="m-icon"></span>
+          <div>
+            <div class="m-val" id="cOver">0</div>
+            <div class="m-label">Atrasados</div>
+          </div>
+        </div>
+      </div>
+      <div class="filters">
+        <button class="filter-btn active" onclick="setFilter('all',this)">Todos</button>
+        <button class="filter-btn" onclick="setFilter('borrowed',this)">Em aberto</button>
+        <button class="filter-btn" onclick="setFilter('soon',this)">Vence logo</button>
+        <button class="filter-btn" onclick="setFilter('overdue',this)">Atrasados</button>
+        <button class="filter-btn" onclick="setFilter('returned',this)">Devolvidos</button>
+      </div>
+      <div class="search-wrap">
+        <span class="search-icon"></span>
+        <input class="search-input" id="empSearch" type="text" placeholder="Buscar por livro ou aluno..." />
+      </div>
+      <div class="card-box">
+        <table>
+          <thead>
+            <tr>
+              <th>Livro</th>
+              <th>Aluno</th>
+              <th>Data Retirada</th>
+              <th>Data Devolução</th>
+              <th>Status</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="empTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h3> Novo Empréstimo</h3>
+      <div class="form-group"><label>Livro</label><select class="form-select" id="inpLivro">
+          <option value="">Selecionar livro disponível...</option>
+          <option>Dom Casmurro</option>
+          <option>A Revolução dos Bichos</option>
+          <option>Programação Python</option>
+        </select></div>
+      <div class="form-group"><label>Aluno</label><select class="form-select" id="inpAluno">
+          <option value="">Selecionar aluno...</option>
+          <option>Ana Souza</option>
+          <option>Carlos Mendes</option>
+          <option>Pedro Lima</option>
+          <option>Juliana Reis</option>
+          <option>Lucas Ferreira</option>
+        </select></div>
+      <div class="form-group"><label>Data de Devolução</label><input class="form-input" id="inpDev" type="date" /></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveEmp()">Registrar</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/emprestimo.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca — Atrasos</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../css/atrasos.css">
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="icon"></div><span>Biblioteca</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-label">Menu</div>
+      <a href="dashboard.html" class="nav-item"><span class="icon"></span> Dashboard</a>
+      <a href="livros.html" class="nav-item"><span class="icon"></span> Livros</a>
+      <a href="emprestimos.html" class="nav-item"><span class="icon"></span> Empréstimos</a>
+      <a href="atrasos.html" class="nav-item active"><span class="icon"></span> Atrasos</a>
+      <a href="alunos.html" class="nav-item"><span class="icon"></span> Alunos</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-info">
+        <div class="avatar">MC</div>
+        <div>
+          <div class="name">Maria Costa</div>
+          <div class="role">Bibliotecária</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title">Atrasos</div>
+      <div class="topbar-actions">
+        <div class="icon-btn"><div class="badge-dot"></div>
+        </div>
+        <div class="topbar-avatar">MC</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="alert-banner">
+        <span class="ab-icon"></span>
+        <div class="ab-text">
+          <h3>Atenção: Livros em atraso</h3>
+          <p>Existem <strong id="overdueCount">0</strong> livro(s) não devolvidos que precisam de atenção imediata.</p>
+        </div>
+        <div class="ab-action"><button class="notify-all-btn" onclick="notifyAll()"> Notificar Todos</button></div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+      <div class="stats-row">
+        <div class="mini-stat danger"><span class="m-icon"></span>
+          <div>
+            <div class="m-val" id="statTotal">0</div>
+            <div class="m-label">Total em atraso</div>
+          </div>
+        </div>
+        <div class="mini-stat"><span class="m-icon"></span>
+          <div>
+            <div class="m-val" id="statMax">0</div>
+            <div class="m-label">Maior atraso (dias)</div>
+          </div>
+        </div>
+        <div class="mini-stat"><span class="m-icon"></span>
+          <div>
+            <div class="m-val" id="statAlunos">0</div>
+            <div class="m-label">Alunos envolvidos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-head">
+        <h2>Livros Não Devolvidos</h2>
+      </div>
+
+
+
+
+
+
+
+      <div class="search-wrap">
+        <span class="search-icon"></span>
+        <input class="search-input" id="atSearch" type="text" placeholder="Buscar por livro ou aluno..." />
+      </div>
+      <div class="card-box">
+        <div class="card-box-header">
+          <h3> Registros de Atraso</h3>
+          <button class="btn btn-ghost btn-sm" onclick="sortByDays()">Ordenar por dias ↓</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Livro</th>
+              <th>Aluno</th>
+              <th>Vencimento</th>
+              <th>Dias em Atraso</th>
+              <th>Notificado</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="atTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/atraso.js"></script>
+</body>
+
+</html>

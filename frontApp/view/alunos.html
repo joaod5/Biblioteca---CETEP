@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca — Alunos</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../css/aluno.css">
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="icon"></div><span>Biblioteca</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-label">Menu</div>
+      <a href="dashboard.html" class="nav-item"><span class="icon"></span> Dashboard</a>
+      <a href="livros.html" class="nav-item"><span class="icon"></span> Livros</a>
+      <a href="emprestimos.html" class="nav-item"><span class="icon"></span> Empréstimos</a>
+      <a href="atrasos.html" class="nav-item"><span class="icon"></span> Atrasos</a>
+      <a href="alunos.html" class="nav-item active"><span class="icon"></span> Alunos</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-info">
+        <div class="avatar-sm">MC</div>
+        <div>
+          <div class="name">Maria Costa</div>
+          <div class="role">Bibliotecária</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title">Alunos</div>
+      <div class="topbar-actions">
+        <div class="icon-btn"><div class="badge-dot"></div>
+        </div>
+        <div class="topbar-avatar">MC</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <h2>Cadastro de Alunos</h2>
+        <button class="btn btn-primary" onclick="openModal()">＋ Novo Aluno</button>
+      </div>
+
+
+
+
+
+
+      <div class="stats-row">
+        <div class="mini-stat"><span style="font-size:22px"></span>
+          <div>
+            <div class="m-val" id="sTotal">0</div>
+            <div class="m-label">Total de alunos</div>
+          </div>
+        </div>
+        <div class="mini-stat"><span style="font-size:22px"></span>
+          <div>
+            <div class="m-val" id="sWith">0</div>
+            <div class="m-label">Com livro</div>
+          </div>
+        </div>
+        <div class="mini-stat"><span style="font-size:22px"></span>
+          <div>
+            <div class="m-val" id="sOk">0</div>
+            <div class="m-label">Sem pendência</div>
+          </div>
+        </div>
+        <div class="mini-stat"><span style="font-size:22px"></span>
+          <div>
+            <div class="m-val" id="sOver">0</div>
+            <div class="m-label">Com atraso</div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+      <div class="search-row">
+        <div class="search-wrap">
+          <span class="search-icon"></span>
+          <input class="search-input" id="alunoSearch" type="text" placeholder="Buscar por nome, ID ou turma..." />
+        </div>
+      </div>
+
+      <div class="card-box">
+        <table>
+          <thead>
+            <tr>
+              <th>Aluno</th>
+              <th>Turma</th>
+              <th>Livros Pegos</th>
+              <th>Status</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="alunoTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+  <!-- MODAL CADASTRO -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h3> Cadastrar Novo Aluno</h3>
+      <div class="form-row">
+        <div class="form-group"><label>Nome</label><input class="form-input" id="inpNome" placeholder="Nome completo" />
+        </div>
+        <div class="form-group"><label>Sobrenome</label><input class="form-input" id="inpSobre"
+            placeholder="Sobrenome" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Turma</label><input class="form-input" id="inpTurma" placeholder="Ex: 3ºA" />
+        </div>
+        <div class="form-group"><label>Ano</label><input class="form-input" id="inpAno" placeholder="Ex: 2026" /></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveAluno()">Cadastrar</button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+  
+  <!-- MODAL DETALHE -->
+  <div class="modal-overlay" id="detailOverlay">
+    <div class="modal detail-modal">
+      <div class="detail-header">
+        <div class="detail-avatar" id="dAvatar"></div>
+        <div class="info">
+          <h3 id="dName"></h3>
+          <p id="dMeta"></p>
+        </div>
+      </div>
+      <div class="detail-books">
+        <h4>Livros Emprestados</h4>
+        <div id="dBooks"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeDetail()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+ <script src="../js/api.js"></script>
+ <script src="../js/aluno.js"></script>
+</body>
+
+</html>
