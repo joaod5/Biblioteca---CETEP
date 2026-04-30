@@ -5,7 +5,7 @@ const API = (() => {
   // Em produção, troque pela URL do Render após o deploy
   const BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     ? 'http://localhost:3001/api'
-    : 'https://SEU-BACKEND.onrender.com/api';
+    : 'https://biblioteca-cetep.onrender.com/api';
 
   async function request(method, path, body) {
     const opts = {

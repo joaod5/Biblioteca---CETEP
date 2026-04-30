@@ -9,10 +9,18 @@ Stack gratuita: **Supabase** (PostgreSQL) + **Render** (Node.js) + **Vercel** (f
 1. Crie conta em supabase.com → **New project**
 2. Dê um nome, escolha a região mais próxima (ex: South America) e anote a senha
 3. Menu lateral → **SQL Editor** → Cole TODO o conteúdo de `banco_postgres.sql` e clique **Run**
-4. Copie a connection string:
+4. Copie a connection string — **use o Transaction Pooler, não a conexão direta:**
    - Menu lateral → **Settings → Database**
-   - Seção **Connection string** → aba **URI**
-   - Formato: `postgresql://postgres:[SENHA]@db.[ID].supabase.co:5432/postgres`
+   - Role até **Connection pooling** (ou aba **Pooling**)
+   - Modo: **Transaction** | Porta: **6543**
+   - Copie a URI. Formato:
+     ```
+     postgresql://postgres.[ID]:[SENHA]@aws-0-[REGIAO].pooler.supabase.com:6543/postgres
+     ```
+   > **Por que o Pooler?** O tier gratuito do Render só suporta IPv4. A conexão direta
+   > do Supabase (porta 5432) usa IPv6 em muitas regiões e causa erro de conexão no Render.
+   > O Transaction Pooler (porta 6543) usa IPv4 e resolve o problema.
+
 5. (Opcional) Atualização automática de status todo dia à meia-noite:
    - **Database → Extensions** → ative `pg_cron`
    - **SQL Editor** execute:
@@ -90,7 +98,7 @@ Clique **Save Changes** — o serviço reinicia automaticamente.
 | Arquivo / Lugar | O que trocar |
 |-----------------|-------------|
 | [frontApp/js/api.js](frontApp/js/api.js) linha `BASE` | URL do Render |
-| Render → Environment → `DB_URL` | Connection string do Supabase |
+| Render → Environment → `DB_URL` | URI do **Transaction Pooler** do Supabase (porta 6543) |
 | Render → Environment → `CORS_ORIGIN` | URL do Vercel |
 
 ---
