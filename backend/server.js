@@ -10,6 +10,7 @@ const rotaLivros      = require('./routes/livros');
 const rotaAlunos      = require('./routes/alunos');
 const rotaEmprestimos = require('./routes/emprestimos');
 const rotaDashboard   = require('./routes/dashboard');
+const rotaAdmin       = require('./routes/admin');
 
 const app  = express();
 const PORT = process.env.PORT || 3001;
@@ -35,7 +36,7 @@ app.use(cors({
     'http://localhost:5500',           // Live Server local
     'http://127.0.0.1:5500',          // Live Server local
   ].filter(Boolean),                  // remove entradas vazias
-  methods: ['GET', 'POST', 'PUT'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type'],
 }));
 
@@ -50,6 +51,7 @@ app.use('/api/livros',      rotaLivros);
 app.use('/api/alunos',      rotaAlunos);
 app.use('/api/emprestimos', rotaEmprestimos);
 app.use('/api/dashboard',   rotaDashboard);
+app.use('/api/admin',       rotaAdmin);
 
 // ── Health check ─────────────────────────────────────────────
 app.get('/api/ping', (_req, res) => res.json({ ok: true }));

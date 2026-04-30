@@ -123,8 +123,33 @@
         <tbody id="dashTable"></tbody>
       </table>
     </div>
+
+    <!-- Zona de perigo -->
+    <div class="danger-zone">
+      <div class="dz-text">
+        <div class="dz-title">Zona de Perigo</div>
+        <div class="dz-sub">Apaga permanentemente todos os livros, alunos e empréstimos do banco de dados.</div>
+      </div>
+      <button class="btn-danger-zone" onclick="openResetModal()">Apagar Todos os Dados</button>
+    </div>
   </div>
 </div>
+
+<!-- Modal de confirmação de reset -->
+<div class="modal-overlay" id="resetOverlay">
+  <div class="modal">
+    <div class="modal-danger-icon">⚠️</div>
+    <h3>Apagar Todos os Dados?</h3>
+    <p class="modal-danger-desc">Esta ação é <strong>irreversível</strong>. Todos os livros, alunos e empréstimos serão apagados permanentemente.</p>
+    <p class="modal-danger-desc">Digite <strong>CONFIRMAR</strong> para prosseguir:</p>
+    <input class="form-input" id="resetConfirmInput" type="text" placeholder="CONFIRMAR" autocomplete="off" />
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeResetModal()">Cancelar</button>
+      <button class="btn btn-reset-confirm" id="btnResetConfirm" onclick="executarReset()" disabled>Apagar Tudo</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
 
 <script src="../js/api.js"></script>
   <script src="../js/dashboard.js"></script>

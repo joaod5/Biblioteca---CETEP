@@ -149,6 +149,44 @@ async function carregarTabelaDashboard() {
   } catch (_) {}
 }
 
+// ── Reset / Apagar todos os dados ───────────────────────────
+function openResetModal() {
+  document.getElementById('resetConfirmInput').value = '';
+  document.getElementById('btnResetConfirm').disabled = true;
+  document.getElementById('resetOverlay').classList.add('open');
+}
+
+function closeResetModal() {
+  document.getElementById('resetOverlay').classList.remove('open');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const inp = document.getElementById('resetConfirmInput');
+  if (inp) {
+    inp.addEventListener('input', () => {
+      document.getElementById('btnResetConfirm').disabled = inp.value !== 'CONFIRMAR';
+    });
+  }
+});
+
+async function executarReset() {
+  try {
+    await API.delete('/admin/reset');
+    closeResetModal();
+    showToast('Todos os dados foram apagados.');
+    setTimeout(() => location.reload(), 1200);
+  } catch (_) {
+    showToast('Erro ao apagar dados. Tente novamente.');
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
 // ── Init ─────────────────────────────────────────────────────
 carregarStats();
 carregarNotificacoes();
