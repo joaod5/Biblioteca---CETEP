@@ -123,30 +123,3 @@ BEGIN
 END;
 $$;
 
--- DADOS DE EXEMPLO (remova em produção)
-INSERT INTO livros (codigo, titulo, autor, categoria_id, status) VALUES
-  ('L001', 'Java Básico',            'Herbert Schildt',  1, 'emprestado'),
-  ('L002', 'Matemática Avançada',    'James Stewart',    2, 'atrasado'),
-  ('L003', 'Dom Casmurro',           'Machado de Assis', 3, 'disponivel'),
-  ('L004', 'O Cortiço',              'Aluísio Azevedo',  3, 'emprestado'),
-  ('L005', 'Física Quântica',        'Richard Feynman',  2, 'atrasado'),
-  ('L006', 'Química Orgânica',       'Paula Yurkanis',   2, 'emprestado'),
-  ('L007', 'Programação Python',     'Mark Lutz',        1, 'disponivel'),
-  ('L008', 'A Revolução dos Bichos', 'George Orwell',    3, 'disponivel');
-
-INSERT INTO alunos (codigo, nome, turma, ano, status) VALUES
-  ('A001', 'Ana Souza',       '3ºA', 2026, 'atrasado'),
-  ('A002', 'Carlos Mendes',   '2ºB', 2026, 'atrasado'),
-  ('A003', 'Pedro Lima',      '1ºC', 2026, 'com_livro'),
-  ('A004', 'Juliana Reis',    '3ºB', 2026, 'com_livro'),
-  ('A005', 'Lucas Ferreira',  '2ºA', 2026, 'com_livro'),
-  ('A006', 'Maria Oliveira',  '1ºA', 2026, 'ok'),
-  ('A007', 'Rafael Torres',   '3ºC', 2026, 'atrasado'),
-  ('A008', 'Bruna Costa',     '2ºC', 2026, 'atrasado');
-
-INSERT INTO emprestimos (livro_id, aluno_id, data_retirada, data_devolucao, status) VALUES
-  (1, 3, '2026-04-01', '2026-04-17', 'aberto'),
-  (2, 2, '2026-04-01', '2026-04-11', 'atrasado'),
-  (4, 4, '2026-04-05', '2026-04-25', 'aberto'),
-  (5, 1, '2026-04-03', '2026-04-13', 'atrasado'),
-  (6, 5, '2026-04-08', '2026-04-28', 'aberto');
