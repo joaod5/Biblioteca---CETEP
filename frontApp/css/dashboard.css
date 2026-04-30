@@ -343,27 +343,42 @@
 
 /* ── Zona de Perigo ─────────────────────────────────────────── */
 .danger-zone {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
   margin-top: 28px;
-  padding: 16px 20px;
+  padding: 18px 20px;
   border: 1.5px solid #FECACA;
   border-radius: var(--radius);
   background: var(--danger-bg);
 }
-.dz-title { font-size: 13px; font-weight: 700; color: var(--danger); }
-.dz-sub   { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.dz-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--danger);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.dz-items { display: flex; flex-direction: column; gap: 0; }
+.dz-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #FECACA;
+}
+.dz-item:last-child { border-bottom: none; padding-bottom: 0; }
+.dz-item-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.dz-item-sub  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.dz-item-tudo .dz-item-name { color: var(--danger); }
 .btn-danger-zone {
   flex-shrink: 0;
   background: var(--danger);
   color: #fff;
   border: none;
-  padding: 9px 16px;
+  padding: 7px 14px;
   border-radius: 8px;
   font-family: inherit;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: background .18s;
@@ -464,8 +479,8 @@
   .toast { bottom: 12px; right: 12px; left: 12px; width: auto; }
   .notifs-list .notif { flex-wrap: wrap; gap: 8px; }
   .notif-time { width: 100%; text-align: right; }
-  .danger-zone { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .btn-danger-zone { width: 100%; text-align: center; justify-content: center; }
+  .dz-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .btn-danger-zone { width: 100%; text-align: center; }
   #resetOverlay .modal { width: calc(100% - 24px) !important; border-radius: 16px 16px 0 0; }
   #resetOverlay { align-items: flex-end; }
 }

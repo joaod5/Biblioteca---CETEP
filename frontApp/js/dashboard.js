@@ -149,31 +149,32 @@ async function carregarTabelaDashboard() {
   } catch (_) {}
 }
 
-// ── Reset / Apagar todos os dados ───────────────────────────
-function openResetModal() {
+// ── Reset / Apagar dados ─────────────────────────────────────
+let _resetRota = '';
+
+function openResetModal(rota, nome, desc) {
+  _resetRota = rota;
+  document.getElementById('resetTitle').textContent = `Apagar ${nome}?`;
+  document.getElementById('resetDesc').textContent  = desc;
   document.getElementById('resetConfirmInput').value = '';
   document.getElementById('btnResetConfirm').disabled = true;
   document.getElementById('resetOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('resetConfirmInput').focus(), 100);
 }
 
 function closeResetModal() {
   document.getElementById('resetOverlay').classList.remove('open');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const inp = document.getElementById('resetConfirmInput');
-  if (inp) {
-    inp.addEventListener('input', () => {
-      document.getElementById('btnResetConfirm').disabled = inp.value !== 'CONFIRMAR';
-    });
-  }
+document.getElementById('resetConfirmInput').addEventListener('input', function () {
+  document.getElementById('btnResetConfirm').disabled = this.value !== 'CONFIRMAR';
 });
 
 async function executarReset() {
   try {
-    await API.delete('/admin/reset');
+    await API.delete(`/admin/${_resetRota}`);
     closeResetModal();
-    showToast('Todos os dados foram apagados.');
+    showToast('Dados apagados com sucesso.');
     setTimeout(() => location.reload(), 1200);
   } catch (_) {
     showToast('Erro ao apagar dados. Tente novamente.');

@@ -126,11 +126,37 @@
 
     <!-- Zona de perigo -->
     <div class="danger-zone">
-      <div class="dz-text">
-        <div class="dz-title">Zona de Perigo</div>
-        <div class="dz-sub">Apaga permanentemente todos os livros, alunos e empréstimos do banco de dados.</div>
+      <div class="dz-title">Zona de Perigo</div>
+      <div class="dz-items">
+        <div class="dz-item">
+          <div>
+            <div class="dz-item-name">Livros</div>
+            <div class="dz-item-sub">Apaga todos os livros e empréstimos vinculados.</div>
+          </div>
+          <button class="btn-danger-zone" onclick="openResetModal('livros','Livros','Todos os livros e empréstimos vinculados serão apagados.')">Apagar Livros</button>
+        </div>
+        <div class="dz-item">
+          <div>
+            <div class="dz-item-name">Alunos</div>
+            <div class="dz-item-sub">Apaga todos os alunos e empréstimos vinculados.</div>
+          </div>
+          <button class="btn-danger-zone" onclick="openResetModal('alunos','Alunos','Todos os alunos e empréstimos vinculados serão apagados.')">Apagar Alunos</button>
+        </div>
+        <div class="dz-item">
+          <div>
+            <div class="dz-item-name">Empréstimos</div>
+            <div class="dz-item-sub">Apaga apenas o histórico de empréstimos.</div>
+          </div>
+          <button class="btn-danger-zone" onclick="openResetModal('emprestimos','Empréstimos','Todo o histórico de empréstimos será apagado.')">Apagar Empréstimos</button>
+        </div>
+        <div class="dz-item dz-item-tudo">
+          <div>
+            <div class="dz-item-name">Tudo</div>
+            <div class="dz-item-sub">Apaga livros, alunos e empréstimos de uma vez.</div>
+          </div>
+          <button class="btn-danger-zone" onclick="openResetModal('tudo','Tudo','Todos os livros, alunos e empréstimos serão apagados.')">Apagar Tudo</button>
+        </div>
       </div>
-      <button class="btn-danger-zone" onclick="openResetModal()">Apagar Todos os Dados</button>
     </div>
   </div>
 </div>
@@ -139,13 +165,13 @@
 <div class="modal-overlay" id="resetOverlay">
   <div class="modal">
     <div class="modal-danger-icon">⚠️</div>
-    <h3>Apagar Todos os Dados?</h3>
-    <p class="modal-danger-desc">Esta ação é <strong>irreversível</strong>. Todos os livros, alunos e empréstimos serão apagados permanentemente.</p>
-    <p class="modal-danger-desc">Digite <strong>CONFIRMAR</strong> para prosseguir:</p>
+    <h3 id="resetTitle">Apagar?</h3>
+    <p class="modal-danger-desc" id="resetDesc"></p>
+    <p class="modal-danger-desc">Esta ação é <strong>irreversível</strong>. Digite <strong>CONFIRMAR</strong> para prosseguir:</p>
     <input class="form-input" id="resetConfirmInput" type="text" placeholder="CONFIRMAR" autocomplete="off" />
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeResetModal()">Cancelar</button>
-      <button class="btn btn-reset-confirm" id="btnResetConfirm" onclick="executarReset()" disabled>Apagar Tudo</button>
+      <button class="btn btn-reset-confirm" id="btnResetConfirm" onclick="executarReset()" disabled>Apagar</button>
     </div>
   </div>
 </div>
