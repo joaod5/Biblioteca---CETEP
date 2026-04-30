@@ -1,5 +1,5 @@
 /* api.js — utilitário compartilhado por todas as páginas
-   Centraliza a URL base e o tratamento de erros de rede.       */
+   Centraliza a URL base, tratamento de erros e toggle da sidebar mobile. */
 
 const API = (() => {
   // Em produção, troque pela URL do Render após o deploy
@@ -31,3 +31,9 @@ const API = (() => {
     put:  (path, body)  => request('PUT',  path, body),
   };
 })();
+
+function toggleSidebar() {
+  document.querySelector('.sidebar').classList.toggle('open');
+  const ov = document.getElementById('sidebarOverlay');
+  if (ov) ov.classList.toggle('open');
+}

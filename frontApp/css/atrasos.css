@@ -73,3 +73,25 @@
   .toast.show{display:block;}
   .notify-all-btn{background:var(--danger);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;}
   .notify-all-btn:hover{background:#DC2626;}
+
+/* ── RESPONSIVIDADE MOBILE ─────────────────────────────────── */
+.menu-toggle{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--text);padding:4px 8px;border-radius:6px;line-height:1;-webkit-tap-highlight-color:transparent;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:150;}
+.sidebar-overlay.open{display:block;}
+@media(max-width:767px){
+  .sidebar{transform:translateX(-100%);transition:transform .28s ease;z-index:200;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .menu-toggle{display:block;}
+  .topbar{padding:0 16px;gap:10px;}
+  .content{padding:16px;}
+  .stats-row{flex-direction:column;}
+  .card-box{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table{min-width:540px;}
+  .modal{width:calc(100% - 32px);max-height:90vh;overflow-y:auto;padding:20px;}
+  .page-head{flex-direction:column;align-items:flex-start;gap:12px;}
+  .toast{bottom:16px;right:16px;left:16px;width:auto;}
+  .alert-banner{flex-wrap:wrap;gap:10px;}
+  .alert-banner .ab-action{margin-left:0;width:100%;}
+  .mini-stat{flex:1 1 calc(50% - 6px);}
+}
