@@ -81,10 +81,10 @@
       </div>
       <div class="filters">
         <button class="filter-btn active" onclick="setFilter('all',this)">Todos</button>
-        <button class="filter-btn" onclick="setFilter('borrowed',this)">Em aberto</button>
-        <button class="filter-btn" onclick="setFilter('soon',this)">Vence logo</button>
-        <button class="filter-btn" onclick="setFilter('overdue',this)">Atrasados</button>
-        <button class="filter-btn" onclick="setFilter('returned',this)">Devolvidos</button>
+        <button class="filter-btn" onclick="setFilter('aberto',this)">Em aberto</button>
+        <button class="filter-btn" onclick="setFilter('vence_logo',this)">Vence logo</button>
+        <button class="filter-btn" onclick="setFilter('atrasado',this)">Atrasados</button>
+        <button class="filter-btn" onclick="setFilter('devolvido',this)">Devolvidos</button>
       </div>
       <div class="search-wrap">
         <span class="search-icon"></span>
@@ -112,17 +112,9 @@
       <h3> Novo Empréstimo</h3>
       <div class="form-group"><label>Livro</label><select class="form-select" id="inpLivro">
           <option value="">Selecionar livro disponível...</option>
-          <option>Dom Casmurro</option>
-          <option>A Revolução dos Bichos</option>
-          <option>Programação Python</option>
         </select></div>
       <div class="form-group"><label>Aluno</label><select class="form-select" id="inpAluno">
           <option value="">Selecionar aluno...</option>
-          <option>Ana Souza</option>
-          <option>Carlos Mendes</option>
-          <option>Pedro Lima</option>
-          <option>Juliana Reis</option>
-          <option>Lucas Ferreira</option>
         </select></div>
       <div class="form-group"><label>Data de Devolução</label><input class="form-input" id="inpDev" type="date" /></div>
       <div class="modal-actions">

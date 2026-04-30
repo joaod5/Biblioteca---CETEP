@@ -61,26 +61,26 @@
       <div class="stat-card">
         <div class="header">
           <span class="label">Total de Livros</span>
-          <div class="stat-icon blue"></div>
+          <div class="stat-icon blue">📚</div>
         </div>
-        <div class="value" id="statLivrosTotal">0</div>
-        <div class="sub"><span class="trend up">↑ 4 novos</span> este mês</div>
+        <div class="value" id="statLivrosTotal">—</div>
+        <div class="sub" id="subLivros">carregando...</div>
       </div>
       <div class="stat-card">
         <div class="header">
           <span class="label">Emprestados</span>
-          <div class="stat-icon yellow"></div>
+          <div class="stat-icon yellow">🔄</div>
         </div>
-        <div class="value" id="statLivrosEmp">0</div>
-        <div class="sub"><span class="trend up">↑ 8</span> em relação à semana passada</div>
+        <div class="value" id="statLivrosEmp">—</div>
+        <div class="sub" id="subEmp">carregando...</div>
       </div>
       <div class="stat-card">
         <div class="header">
           <span class="label">Em Atraso</span>
-          <div class="stat-icon red"></div>
+          <div class="stat-icon red">⚠️</div>
         </div>
-        <div class="value" id="statEmpAtrasado">0</div>
-        <div class="sub"><span class="trend down">↑ 2</span> novos atrasos hoje</div>
+        <div class="value" id="statEmpAtrasado">—</div>
+        <div class="sub" id="subAtraso">carregando...</div>
       </div>
     </div>
 
@@ -95,40 +95,7 @@
       <a class="see-all" href="atrasos.html">Ver todos →</a>
     </div>
     
-    <div class="notifs-list">
-      <div class="notif danger">
-        <span class="notif-icon"></span>
-        <div class="notif-body">
-          <div class="notif-title">Livro "Matemática Avançada" está em atraso</div>
-          <div class="notif-sub">Aluno: Carlos Mendes · 5 dias em atraso</div>
-        </div>
-        <span class="notif-time">há 2h</span>
-      </div>
-      <div class="notif danger">
-        <span class="notif-icon"></span>
-        <div class="notif-body">
-          <div class="notif-title">Livro "Física Quântica" está em atraso</div>
-          <div class="notif-sub">Aluno: Ana Souza · 3 dias em atraso</div>
-        </div>
-        <span class="notif-time">há 5h</span>
-      </div>
-      <div class="notif warning">
-        <span class="notif-icon"></span>
-        <div class="notif-body">
-          <div class="notif-title">Livro "Java Básico" próximo da devolução</div>
-          <div class="notif-sub">Aluno: Pedro Lima · Vence amanhã</div>
-        </div>
-        <span class="notif-time">hoje</span>
-      </div>
-      <div class="notif warning">
-        <span class="notif-icon"></span>
-        <div class="notif-body">
-          <div class="notif-title">Livro "Química Orgânica" vence em 2 dias</div>
-          <div class="notif-sub">Aluno: Juliana Reis · Vence em 18/04/2026</div>
-        </div>
-        <span class="notif-time">hoje</span>
-      </div>
-    </div>
+    <div class="notifs-list" id="notifsList"></div>
 
 
 
@@ -153,43 +120,7 @@
             <th>Ação</th>
           </tr>
         </thead>
-        <tbody id="dashTable">
-          <tr>
-            <td><div class="book-name">Java Básico</div><div class="book-author">Herbert Schildt</div></td>
-            <td>Herbert Schildt</td>
-            <td><span class="badge-status soon">Vence logo</span></td>
-            <td>17/04/2026</td>
-            <td><button class="btn btn-ghost btn-sm">Detalhes</button></td>
-          </tr>
-          <tr>
-            <td><div class="book-name">Matemática Avançada</div><div class="book-author">James Stewart</div></td>
-            <td>James Stewart</td>
-            <td><span class="badge-status overdue">Atrasado</span></td>
-            <td>11/04/2026</td>
-            <td><button class="btn btn-danger btn-sm">Notificar</button></td>
-          </tr>
-          <tr>
-            <td><div class="book-name">Dom Casmurro</div><div class="book-author">Machado de Assis</div></td>
-            <td>Machado de Assis</td>
-            <td><span class="badge-status available">Disponível</span></td>
-            <td>—</td>
-            <td><button class="btn btn-ghost btn-sm">Detalhes</button></td>
-          </tr>
-          <tr>
-            <td><div class="book-name">O Cortiço</div><div class="book-author">Aluísio Azevedo</div></td>
-            <td>Aluísio Azevedo</td>
-            <td><span class="badge-status borrowed">Emprestado</span></td>
-            <td>25/04/2026</td>
-            <td><button class="btn btn-ghost btn-sm">Detalhes</button></td>
-          </tr>
-          <tr>
-            <td><div class="book-name">Física Quântica</div><div class="book-author">Richard Feynman</div></td>
-            <td>Richard Feynman</td>
-            <td><span class="badge-status overdue">Atrasado</span></td>
-            <td>13/04/2026</td>
-            <td><button class="btn btn-danger btn-sm">Notificar</button></td>
-          </tr>
-        </tbody>
+        <tbody id="dashTable"></tbody>
       </table>
     </div>
   </div>
