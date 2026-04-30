@@ -1,124 +1,137 @@
-'use strict';
-const router  = require('express').Router();
-const { body, param, validationResult } = require('express-validator');
-const db      = require('../config/db');
+/* livros.js — Acervo de Livros (consome API REST) */
 
-// Helper: retorna os erros de validação ou passa adiante
-function validate(req, res, next) {
-  const erros = validationResult(req);
-  if (!erros.isEmpty()) return res.status(400).json({ erros: erros.array() });
-  next();
+const statusLabel = { disponivel: 'Disponível', emprestado: 'Emprestado', atrasado: 'Atrasado' };
+const statusClass = { disponivel: 'available',  emprestado: 'borrowed',   atrasado: 'overdue'  };
+
+// cache dos livros carregados (evita XSS em onclick com strings)
+let livrosCache = {};
+let editId = null;
+
+// ── Renderiza tabela ─────────────────────────────────────────
+function renderTabela(livros) {
+  const noRes = document.getElementById('noResults');
+  if (!livros.length) {
+    document.getElementById('booksTable').innerHTML = '';
+    noRes.style.display = 'block';
+    return;
+  }
+  noRes.style.display = 'none';
+  livrosCache = {};
+  livros.forEach(l => { livrosCache[l.id] = l; });
+
+  document.getElementById('booksTable').innerHTML = livros.map(l => `
+    <tr>
+      <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-muted)">${l.codigo}</td>
+      <td><div class="book-name">${l.titulo}</div></td>
+      <td style="color:var(--text-muted)">${l.autor}</td>
+      <td style="color:var(--text-muted)">${l.categoria}</td>
+      <td><span class="badge-status ${statusClass[l.status] || 'borrowed'}">${statusLabel[l.status] || l.status}</span></td>
+      <td><button class="btn btn-ghost btn-sm" onclick="openEdit(${l.id})">Editar</button></td>
+    </tr>
+  `).join('');
 }
 
-// ── GET /livros ─────────────────────────────────────────────
-// Lista todos os livros com categoria e status.
-// Suporta ?busca=termo para filtrar.
-router.get('/', async (req, res, next) => {
+// ── Carrega livros ───────────────────────────────────────────
+let debounceTimer;
+async function carregarLivros(busca = '') {
   try {
-    const busca = req.query.busca ? `%${req.query.busca}%` : '%';
-    const [rows] = await db.query(
-      `SELECT l.id, l.codigo, l.titulo, l.autor,
-              c.nome AS categoria, l.status, l.criado_em
-       FROM livros l
-       JOIN categorias c ON c.id = l.categoria_id
-       WHERE l.titulo LIKE ? OR l.autor LIKE ? OR c.nome LIKE ?
-       ORDER BY l.titulo`,
-      [busca, busca, busca]
-    );
-    res.json(rows);
-  } catch (err) { next(err); }
+    const path = busca ? `/livros?busca=${encodeURIComponent(busca)}` : '/livros';
+    const livros = await API.get(path);
+    document.getElementById('searchTerm').textContent = busca;
+    renderTabela(livros);
+  } catch (err) {
+    showToast(err.message, true);
+  }
+}
+
+document.getElementById('bookSearch').addEventListener('input', function () {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => carregarLivros(this.value.trim()), 300);
 });
 
-// ── GET /livros/disponiveis ─────────────────────────────────
-// Retorna só os livros disponíveis para empréstimo (usado nos selects)
-router.get('/disponiveis', async (_req, res, next) => {
+// ── Carrega categorias no select ─────────────────────────────
+async function carregarCategorias(selecionarId = null) {
   try {
-    const [rows] = await db.query(
-      `SELECT id, codigo, titulo, autor FROM livros WHERE status = 'disponivel' ORDER BY titulo`
-    );
-    res.json(rows);
-  } catch (err) { next(err); }
-});
+    const cats = await API.get('/livros/categorias/lista');
+    const sel  = document.getElementById('inpCateg');
+    sel.innerHTML = '<option value="">Selecionar categoria...</option>' +
+      cats.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+    if (selecionarId) sel.value = selecionarId;
+  } catch (_) {}
+}
 
-// ── GET /livros/categorias/lista ─────────────────────────────
-router.get('/categorias/lista', async (_req, res, next) => {
+// ── Modal: novo livro ────────────────────────────────────────
+async function openModal() {
+  editId = null;
+  document.querySelector('#modalOverlay h3').textContent = '📖 Cadastrar Novo Livro';
+  document.querySelector('#modalOverlay .btn-primary').textContent = 'Salvar Livro';
+  document.getElementById('inpNome').value  = '';
+  document.getElementById('inpAutor').value = '';
+  await carregarCategorias();
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+// ── Modal: editar livro ──────────────────────────────────────
+async function openEdit(id) {
+  const livro = livrosCache[id];
+  if (!livro) return;
+  editId = id;
+  document.querySelector('#modalOverlay h3').textContent = '✏️ Editar Livro';
+  document.querySelector('#modalOverlay .btn-primary').textContent = 'Atualizar';
+  document.getElementById('inpNome').value  = livro.titulo;
+  document.getElementById('inpAutor').value = livro.autor;
+  await carregarCategorias(livro.categoria_id);
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  editId = null;
+}
+
+// ── Salvar / Atualizar ───────────────────────────────────────
+async function saveBook() {
+  const titulo       = document.getElementById('inpNome').value.trim();
+  const autor        = document.getElementById('inpAutor').value.trim();
+  const categoria_id = parseInt(document.getElementById('inpCateg').value);
+
+  if (!titulo || !autor || !categoria_id) {
+    showToast('Preencha todos os campos!', true);
+    return;
+  }
+
+  const btn = document.querySelector('#modalOverlay .btn-primary');
+  btn.disabled    = true;
+  btn.textContent = editId ? 'Atualizando…' : 'Salvando…';
+
   try {
-    const [rows] = await db.query(`SELECT id, nome FROM categorias ORDER BY nome`);
-    res.json(rows);
-  } catch (err) { next(err); }
-});
-
-// ── GET /livros/:id ─────────────────────────────────────────
-router.get('/:id',
-  param('id').isInt({ min: 1 }),
-  validate,
-  async (req, res, next) => {
-    try {
-      const [rows] = await db.query(
-        `SELECT l.id, l.codigo, l.titulo, l.autor,
-                c.nome AS categoria, l.status, l.criado_em
-         FROM livros l
-         JOIN categorias c ON c.id = l.categoria_id
-         WHERE l.id = ?`,
-        [req.params.id]
-      );
-      if (!rows.length) return res.status(404).json({ erro: 'Livro não encontrado.' });
-      res.json(rows[0]);
-    } catch (err) { next(err); }
+    if (editId) {
+      await API.put(`/livros/${editId}`, { titulo, autor, categoria_id });
+      showToast('✅ Livro atualizado!');
+    } else {
+      await API.post('/livros', { titulo, autor, categoria_id });
+      showToast('✅ Livro cadastrado!');
+    }
+    closeModal();
+    carregarLivros(document.getElementById('bookSearch').value.trim());
+  } catch (err) {
+    showToast(err.message, true);
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = editId ? 'Atualizar' : 'Salvar Livro';
   }
-);
+}
 
-// ── POST /livros ────────────────────────────────────────────
-router.post('/',
-  body('titulo').isLength({ min: 2, max: 200 }).withMessage('Título inválido.'),
-  body('autor').isLength({ min: 2, max: 150 }).withMessage('Autor inválido.'),
-  body('categoria_id').isInt({ min: 1 }).withMessage('Categoria inválida.'),
-  validate,
-  async (req, res, next) => {
-    try {
-      const { titulo, autor, categoria_id } = req.body;
+// ── Toast ─────────────────────────────────────────────────────
+function showToast(msg, err = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = 'toast show' + (err ? ' error' : '');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
 
-      // Verifica duplicata
-      const [dup] = await db.query(
-        `SELECT id FROM livros WHERE titulo = ? AND autor = ? LIMIT 1`,
-        [titulo, autor]
-      );
-      if (dup.length) return res.status(409).json({ erro: 'Livro já cadastrado.' });
+document.getElementById('modalOverlay').addEventListener('click',
+  e => { if (e.target === e.currentTarget) closeModal(); });
 
-      // Gera código sequencial
-      const [[{ ultimo }]] = await db.query(`SELECT MAX(id) AS ultimo FROM livros`);
-      const codigo = 'L' + String((ultimo || 0) + 1).padStart(3, '0');
-
-      const [result] = await db.query(
-        `INSERT INTO livros (codigo, titulo, autor, categoria_id) VALUES (?, ?, ?, ?)`,
-        [codigo, titulo, autor, categoria_id]
-      );
-      res.status(201).json({ id: result.insertId, codigo, titulo, autor, categoria_id, status: 'disponivel' });
-    } catch (err) { next(err); }
-  }
-);
-
-// ── PUT /livros/:id ─────────────────────────────────────────
-router.put('/:id',
-  param('id').isInt({ min: 1 }),
-  body('titulo').optional().isLength({ min: 2, max: 200 }),
-  body('autor').optional().isLength({ min: 2, max: 150 }),
-  body('categoria_id').optional().isInt({ min: 1 }),
-  validate,
-  async (req, res, next) => {
-    try {
-      const { titulo, autor, categoria_id } = req.body;
-      const campos = [];
-      const valores = [];
-      if (titulo)       { campos.push('titulo = ?');       valores.push(titulo); }
-      if (autor)        { campos.push('autor = ?');        valores.push(autor); }
-      if (categoria_id) { campos.push('categoria_id = ?'); valores.push(categoria_id); }
-      if (!campos.length) return res.status(400).json({ erro: 'Nenhum campo para atualizar.' });
-      valores.push(req.params.id);
-      await db.query(`UPDATE livros SET ${campos.join(', ')} WHERE id = ?`, valores);
-      res.json({ mensagem: 'Livro atualizado.' });
-    } catch (err) { next(err); }
-  }
-);
-
-module.exports = router;
+// ── Init ─────────────────────────────────────────────────────
+carregarLivros();

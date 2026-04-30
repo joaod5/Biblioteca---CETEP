@@ -18,6 +18,7 @@ router.get('/', async (req, res, next) => {
     const busca = req.query.busca ? `%${req.query.busca}%` : '%';
     const [rows] = await db.query(
       `SELECT l.id, l.codigo, l.titulo, l.autor,
+              l.categoria_id,
               c.nome AS categoria, l.status, l.criado_em
        FROM livros l
        JOIN categorias c ON c.id = l.categoria_id
@@ -48,6 +49,7 @@ router.get('/:id',
     try {
       const [rows] = await db.query(
         `SELECT l.id, l.codigo, l.titulo, l.autor,
+                l.categoria_id,
                 c.nome AS categoria, l.status, l.criado_em
          FROM livros l
          JOIN categorias c ON c.id = l.categoria_id
