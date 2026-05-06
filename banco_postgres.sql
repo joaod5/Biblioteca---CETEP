@@ -122,4 +122,3 @@ BEGIN
     AND id IN (SELECT aluno_id FROM emprestimos WHERE status IN ('aberto','vence_logo'));
 END;
 $$;
-

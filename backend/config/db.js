@@ -28,7 +28,7 @@ const pool = new Pool({
 // Testa a conexão ao iniciar o servidor
 pool.connect()
   .then(client => {
-    console.log('✅ Banco de dados conectado (PostgreSQL/Supabase)');
+    console.log(' Banco de dados conectado (PostgreSQL/Supabase)');
     client.release();
   })
   .catch(err => {
